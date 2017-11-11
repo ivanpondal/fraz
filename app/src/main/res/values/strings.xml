@@ -1,0 +1,8 @@
+<resources>
+    <string name="app_name">fraz</string>
+    <string name="character_photo_dialog_title">Character photo</string>
+
+    <string name="facebook_application_id" translatable="false">145363102762983</string>
+    <!-- Facebook Application ID, prefixed by 'fb'.  Enables Chrome Custom tabs. -->
+    <string name="facebook_login_protocol_scheme" translatable="false">fb145363102762983</string>
+</resources>

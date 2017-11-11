@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layout xmlns:android="http://schemas.android.com/apk/res/android"
+        xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <data>
+        <variable
+                name="viewmodel"
+                type="com.playground.ipondal.fraz.candidates.CandidatesViewModel"/>
+    </data>
+
+    <android.support.design.widget.CoordinatorLayout android:layout_width="match_parent"
+                                                     android:layout_height="match_parent">
+        <android.support.v7.widget.RecyclerView
+                android:id="@+id/candidates_list"
+                app:items="@{viewmodel.items}"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+        <android.support.design.widget.FloatingActionButton android:id="@+id/add_candidate_button"
+                                                            android:layout_width="wrap_content"
+                                                            android:layout_height="wrap_content"
+                                                            android:layout_margin="@dimen/fab_margin"
+                                                            app:srcCompat="@drawable/ic_add"
+                                                            app:layout_anchor="@id/candidates_list"
+                                                            app:layout_anchorGravity="bottom|right|end"
+                                                            android:onClick="@{(view) -> viewmodel.addCandidate()}"/>
+    </android.support.design.widget.CoordinatorLayout>
+
+</layout>
