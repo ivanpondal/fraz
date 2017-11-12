@@ -6,6 +6,9 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.View;
+import android.widget.AdapterView;
+import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.storage.FirebaseStorage;
@@ -35,10 +38,22 @@ public class CandidatesActivity extends AppCompatActivity implements CandidatesN
 		mCandidatesActivityBinding = DataBindingUtil.setContentView(this, R.layout.candidates_activity);
 		mCandidatesActivityBinding.setViewmodel(mCandidatesViewModel);
 
-		mCandidatesAdapter = new CandidatesAdapter(this, FirebaseStorage.getInstance());
+		mCandidatesAdapter = new CandidatesAdapter(this, FirebaseStorage.getInstance(), mCandidatesViewModel);
 		RecyclerView recyclerView = mCandidatesActivityBinding.candidatesList;
 		recyclerView.setLayoutManager(new LinearLayoutManager(this));
 		recyclerView.setAdapter(mCandidatesAdapter);
+
+		mCandidatesActivityBinding.spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+			@Override
+			public void onItemSelected(AdapterView<?> parent, View view, int pos, long id) {
+				mCandidatesViewModel.selectedCategory.set(parent.getItemAtPosition(pos).toString());
+			}
+
+			@Override
+			public void onNothingSelected(AdapterView<?> adapterView) {
+
+			}
+		});
 	}
 
 	@Override
@@ -50,5 +65,10 @@ public class CandidatesActivity extends AppCompatActivity implements CandidatesN
 	@Override
 	public void addCandidate() {
 		startActivity(new Intent(this, AddCandidateActivity.class));
+	}
+
+	@Override
+	public void showMessage(String message) {
+		Toast.makeText(this, message, 5).show();
 	}
 }

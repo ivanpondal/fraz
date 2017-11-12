@@ -8,11 +8,14 @@ import com.playground.ipondal.fraz.R;
 import com.playground.ipondal.fraz.data.source.*;
 import com.playground.ipondal.fraz.data.Candidate;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class CandidatesViewModel extends BaseObservable {
 	public final ObservableList<Candidate> items = new ObservableArrayList<>();
 	public final ObservableList<String> categories = new ObservableArrayList<>();
+	public final ObservableField<String> selectedCategory = new ObservableField<String>();
 	public final ObservableBoolean isVotingEnabled = new ObservableBoolean(false);
 	public final ObservableBoolean userAlreadyVoted = new ObservableBoolean(false);
 
@@ -20,6 +23,8 @@ public class CandidatesViewModel extends BaseObservable {
 	private final VotingRepository mVotingRepository;
 	private final CandidatesNavigator mCandidatesNavigator;
 	private final String mUserId;
+
+	public Map<String, Candidate> categoryVotes = new HashMap<>();
 
 	public CandidatesViewModel(CandidatesRepository mCandidatesRepository, VotingRepository mVotingRepository,
 			CandidatesNavigator mCandidatesNavigator, String userId) {
@@ -54,6 +59,9 @@ public class CandidatesViewModel extends BaseObservable {
 			public void onCategoriesLoaded(List<String> loadedCategories) {
 				categories.clear();
 				categories.addAll(loadedCategories);
+				for (String category: categories) {
+					categoryVotes.put(category, null);
+				}
 			}
 		});
 	}
@@ -62,4 +70,25 @@ public class CandidatesViewModel extends BaseObservable {
 		mCandidatesNavigator.addCandidate();
 	}
 
+	public void vote() {
+		boolean missingCategories = false;
+		for (Candidate votedCandidate: categoryVotes.values()) {
+			if (votedCandidate == null)	{
+				missingCategories = true;
+				break;
+			}
+		}
+
+		if (missingCategories) {
+			mCandidatesNavigator.showMessage("You must vote a candidate in all categories");
+		} else {
+			mVotingRepository.vote(mUserId, categoryVotes, new SaveVotesCallback() {
+				@Override
+				public void onSaveVotes() {
+					mCandidatesNavigator.showMessage("Your vote has been registered!");
+				}
+			});
+			userAlreadyVoted.set(true);
+		}
+	}
 }

@@ -46,7 +46,7 @@
                     android:enabled="@{!viewmodel.isSubmitting}"
                     android:text="@={viewmodel.characterName}"/>
         </android.support.design.widget.TextInputLayout>
-        <Button
+        <android.support.v7.widget.AppCompatButton
                 android:text="SUBMIT"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content" android:id="@+id/submit_button"
@@ -56,7 +56,7 @@
                 android:layout_marginEnd="8dp"
                 android:onClick="@{(view) -> viewmodel.submit()}"
                 android:enabled="@{!viewmodel.isSubmitting}"/>
-        <Button
+        <android.support.v7.widget.AppCompatButton
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/button2" app:layout_constraintRight_toLeftOf="@+id/submit_button"

@@ -13,4 +13,16 @@ public class CandidatesRecyclerViewBindings {
         CandidatesAdapter adapter = (CandidatesAdapter) recyclerView.getAdapter();
         adapter.replaceData(items);
     }
+
+    @BindingAdapter("app:categories")
+    public static void setCategories(RecyclerView recyclerView, List<String> categories) {
+        CandidatesAdapter adapter = (CandidatesAdapter) recyclerView.getAdapter();
+        adapter.setCategoryVotes(categories);
+    }
+
+    @BindingAdapter("app:selected_category")
+    public static void setCategories(RecyclerView recyclerView, String selectedCategory) {
+        CandidatesAdapter adapter = (CandidatesAdapter) recyclerView.getAdapter();
+        adapter.switchCategory(selectedCategory);
+    }
 }
