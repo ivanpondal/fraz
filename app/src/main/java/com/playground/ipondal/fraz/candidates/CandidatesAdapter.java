@@ -6,6 +6,8 @@ import android.view.LayoutInflater;
 import android.view.ViewGroup;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
+import com.firebase.ui.storage.images.FirebaseImageLoader;
+import com.google.firebase.storage.FirebaseStorage;
 import com.playground.ipondal.fraz.data.Candidate;
 import com.playground.ipondal.fraz.databinding.CandidateItemBinding;
 
@@ -15,6 +17,7 @@ import java.util.List;
 public class CandidatesAdapter extends RecyclerView.Adapter<CandidatesAdapter.CandidatesViewHolder> {
 
 	private final Activity mActivity;
+	private final FirebaseStorage mFirebaseStorage;
 	private List<Candidate> mCandidates;
 
     class CandidatesViewHolder extends RecyclerView.ViewHolder{
@@ -27,8 +30,9 @@ public class CandidatesAdapter extends RecyclerView.Adapter<CandidatesAdapter.Ca
 		}
 	}
 
-	public CandidatesAdapter(Activity activity){
+	public CandidatesAdapter(Activity activity, FirebaseStorage firebaseStorage){
 		mCandidates = new ArrayList<>();
+		mFirebaseStorage = firebaseStorage;
 		mActivity = activity;
 	}
 
@@ -51,7 +55,7 @@ public class CandidatesAdapter extends RecyclerView.Adapter<CandidatesAdapter.Ca
 		holder.binding.setViewmodel(viewmodel);
 		viewmodel.setCandidate(mCandidates.get(position));
 		Glide.with(mActivity)
-				.load(mCandidates.get(position).imageRef())
+				.load(mFirebaseStorage.getReference(mCandidates.get(position).imageRef()))
                 .apply(RequestOptions.centerCropTransform())
 				.into(holder.binding.imageView);
 
